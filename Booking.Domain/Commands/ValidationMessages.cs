@@ -1,4 +1,4 @@
-﻿namespace ChatRoom.Domain.Commands
+﻿namespace Booking.Domain.Commands
 {
     public struct ValidationMessages
     {
