@@ -21,7 +21,7 @@ namespace Booking.Data.Mappings
                 .HasForeignKey(x => x.HotelId)
                 .IsRequired();
 
-            builder.HasMany(x => x.Facilities);
+            builder.HasMany(x => x.Facilities).WithMany(x => x.Rooms);
         }
     }
 }
