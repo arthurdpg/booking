@@ -8,7 +8,20 @@ namespace Booking.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Room> builder)
         {
-            throw new NotImplementedException();
+            builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.Type)
+                .IsRequired(true);
+
+            builder.Property(x => x.Size)
+                .IsRequired(true);
+
+            builder.HasOne(x => x.Hotel)
+                .WithMany(x => x.Rooms)
+                .HasForeignKey(x => x.HotelId)
+                .IsRequired();
+
+            builder.HasMany(x => x.Facilities);
         }
     }
 }

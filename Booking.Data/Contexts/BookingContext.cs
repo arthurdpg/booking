@@ -17,6 +17,7 @@ namespace Booking.Data.Contexts
         {
             modelBuilder.ApplyConfiguration(new HotelMap());
             modelBuilder.ApplyConfiguration(new RoomMap());
+            modelBuilder.ApplyConfiguration(new FacilityMap());
             base.OnModelCreating(modelBuilder);
         }
     }

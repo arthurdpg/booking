@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Booking.Data.Mappings
 {
-    internal class HotelMap : IEntityTypeConfiguration<Hotel>
+    internal class FacilityMap : IEntityTypeConfiguration<Facility>
     {
-        public void Configure(EntityTypeBuilder<Hotel> builder)
+        public void Configure(EntityTypeBuilder<Facility> builder)
         {
             builder.HasKey(x => x.Id);
 

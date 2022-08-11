@@ -1,8 +1,8 @@
 ﻿namespace Booking.Domain.Models
 {
-    public class Hotel
+    public class Facility
     {
-        public Hotel(Guid id, string name)
+        public Facility(Guid id, string name)
         {
             Id = id;
             Name = name;
@@ -10,6 +10,5 @@
 
         public Guid Id { get; private set; }
         public string Name { get; private set; }
-        public IList<Room>? Rooms { get; private set; }
     }
 }
