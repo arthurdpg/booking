@@ -12,6 +12,9 @@ namespace Booking.Domain.Models
             Facilities = facilities;
         }
 
+        // Empty constructor for EF
+        protected Room() { }
+
         public Guid Id { get; private set; }
         public RoomType Type { get; private set; }
         public int Size { get; private set; }

@@ -8,6 +8,9 @@
             Name = name;
         }
 
+        // Empty constructor for EF
+        protected Facility() { }
+
         public Guid Id { get; private set; }
         public string Name { get; private set; }
     }
