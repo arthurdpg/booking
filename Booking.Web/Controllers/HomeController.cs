@@ -15,7 +15,13 @@ namespace Booking.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(new RoomAvailabilityViewModel());
+        }
+
+        [HttpPost("room-availability")]
+        public async Task<IActionResult> GetRoomAvailability([FromForm]RoomAvailabilityViewModel model)
+        {
+            return View("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

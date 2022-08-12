@@ -1,6 +1,6 @@
 ﻿namespace Booking.Domain.Models
 {
-    public class Facility
+    public class Facility : IDomainModel
     {
         public Facility(Guid id, string name)
         {

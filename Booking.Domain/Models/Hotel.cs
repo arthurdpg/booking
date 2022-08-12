@@ -1,6 +1,6 @@
 ﻿namespace Booking.Domain.Models
 {
-    public class Hotel
+    public class Hotel : IDomainModel
     {
         public Hotel(Guid id, string name)
         {

@@ -2,7 +2,7 @@
 
 namespace Booking.Domain.Models
 {
-    public class Room
+    public class Room : IDomainModel
     {
         public Room(Guid id, Hotel hotel, int size, IList<Facility> facilities)
         {
@@ -21,5 +21,6 @@ namespace Booking.Domain.Models
         public Guid HotelId { get; private set; }
         public Hotel Hotel { get; private set; }
         public IList<Facility> Facilities { get; private set; }
+        public IList<Reservation> Reservations { get; private set; }
     }
 }

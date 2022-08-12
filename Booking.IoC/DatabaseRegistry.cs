@@ -1,6 +1,9 @@
 ﻿using Booking.Data;
 using Booking.Data.Contexts;
+using Booking.Data.Queries;
+using Booking.Data.Repositories;
 using Booking.Domain.Interfaces;
+using Booking.Domain.Interfaces.Queries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +19,9 @@ namespace Booking.IoC
                 options.UseSqlServer(connectionString));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IRoomQueries, RoomQueries>();
+            services.AddScoped<IReservationQueries, ReservationQueries>();
         }
 
         public static void ApplyDatabaseMigrations(this IServiceProvider services)

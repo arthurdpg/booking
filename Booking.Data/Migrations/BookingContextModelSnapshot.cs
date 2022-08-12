@@ -35,7 +35,7 @@ namespace Booking.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Facility");
+                    b.ToTable("Facilities");
                 });
 
             modelBuilder.Entity("Booking.Domain.Models.Hotel", b =>
@@ -52,6 +52,37 @@ namespace Booking.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Hotels");
+                });
+
+            modelBuilder.Entity("Booking.Domain.Models.Reservation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("From")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Observations")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid>("RoomId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("To")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("Booking.Domain.Models.Room", b =>
@@ -91,6 +122,17 @@ namespace Booking.Data.Migrations
                     b.ToTable("FacilityRoom");
                 });
 
+            modelBuilder.Entity("Booking.Domain.Models.Reservation", b =>
+                {
+                    b.HasOne("Booking.Domain.Models.Room", "Room")
+                        .WithMany("Reservations")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
+                });
+
             modelBuilder.Entity("Booking.Domain.Models.Room", b =>
                 {
                     b.HasOne("Booking.Domain.Models.Hotel", "Hotel")
@@ -120,6 +162,11 @@ namespace Booking.Data.Migrations
             modelBuilder.Entity("Booking.Domain.Models.Hotel", b =>
                 {
                     b.Navigation("Rooms");
+                });
+
+            modelBuilder.Entity("Booking.Domain.Models.Room", b =>
+                {
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

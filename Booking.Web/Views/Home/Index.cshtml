@@ -1,8 +1,28 @@
-﻿@{
+﻿@model RoomAvailabilityViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
+@section css {
+    <link rel="stylesheet" href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.css" />
+}
+    <div class="text-center">
+        <h1 class="display-4">Welcome to the Hotel</h1>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to the Hotel</h1>
-    
-</div>
+        <form autocomplete="off" method="post" asp-controller="Home" asp-action="GetRoomAvailability">
+            <div class="row">
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(model => model.From, htmlAttributes: new { @class = "form-control", @placeholder = "From", @maxlength="8", @id="txtStartDate" })
+                </div>
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(model => model.To, htmlAttributes: new { @class = "form-control", @placeholder = "To", @maxlength="8", @id="txtEndDate" })
+                </div>
+                <div class="col-sm-4">
+                    <button type="submit" class="btn btn-primary">Check availability</button>
+                </div>
+            </div>
+        </form>
+    </div>
+@section Scripts {
+    <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/js/home/index.js"></script>
+}

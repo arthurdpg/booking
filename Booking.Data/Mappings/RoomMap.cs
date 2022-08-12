@@ -11,10 +11,10 @@ namespace Booking.Data.Mappings
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Type)
-                .IsRequired(true);
+                .IsRequired();
 
             builder.Property(x => x.Size)
-                .IsRequired(true);
+                .IsRequired();
 
             builder.HasOne(x => x.Hotel)
                 .WithMany(x => x.Rooms)

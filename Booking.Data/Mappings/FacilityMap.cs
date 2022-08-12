@@ -13,7 +13,7 @@ namespace Booking.Data.Mappings
             builder.Property(x => x.Name)
                 .HasColumnType("nvarchar(255)")
                 .HasMaxLength(255)
-                .IsRequired(true);
+                .IsRequired();
         }
     }
 }
