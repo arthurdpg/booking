@@ -14,5 +14,10 @@ namespace Booking.Data.Queries
             Db = db;
             DbSet = Db.Set<TEntity>();
         }
+
+        public virtual async Task<TEntity> FindById(object id)
+        {
+            return await DbSet.FindAsync(id);
+        }
     }
 }

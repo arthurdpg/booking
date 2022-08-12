@@ -20,5 +20,15 @@ namespace Booking.Data.Repositories
         {
             await DbSet.AddAsync(entity);
         }
+
+        public void Update(TEntity entity)
+        {
+            DbSet.Update(entity);
+        }
+
+        public void Delete(TEntity entity)
+        {
+            DbSet.Remove(entity);
+        }
     }
 }

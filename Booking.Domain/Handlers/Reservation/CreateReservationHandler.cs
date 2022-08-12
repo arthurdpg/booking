@@ -1,7 +1,6 @@
 ﻿using Booking.Domain.Commands;
 using Booking.Domain.Commands.Reservation;
 using Booking.Domain.Interfaces;
-using Booking.Domain.Interfaces.Bus;
 
 namespace Booking.Domain.Handlers.Reservation
 {
@@ -9,19 +8,23 @@ namespace Booking.Domain.Handlers.Reservation
     {
         private readonly IUnitOfWork _uow;
         private readonly IRepository<Models.Reservation> _repository;
-        private readonly IMediatorHandler _bus;
 
-        public CreateReservationHandler(IUnitOfWork uow, IRepository<Models.Reservation> repository, IMediatorHandler bus)
+        public CreateReservationHandler(IUnitOfWork uow, IRepository<Models.Reservation> repository)
         {
             _uow = uow;
             _repository = repository;
-            _bus = bus;
         }
 
         public async Task<CommandResult> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
         {
             if (!request.IsValid())
                 return CommandResultFactory.ValidationErrorResult(request);
+
+            // Need to check the availability
+            var reservation = new Models.Reservation();
+
+            await _repository.InsertAsync(reservation);
+            await _uow.CommitAsync();
 
             return CommandResultFactory.SuccessResult();
         }

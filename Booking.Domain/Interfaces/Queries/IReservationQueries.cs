@@ -1,6 +1,8 @@
-﻿namespace Booking.Domain.Interfaces.Queries
+﻿using Booking.Domain.Models;
+
+namespace Booking.Domain.Interfaces.Queries
 {
-    public interface IReservationQueries
+    public interface IReservationQueries : IQueries<Reservation>
     {
     }
 }
