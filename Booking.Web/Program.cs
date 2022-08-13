@@ -1,6 +1,4 @@
-using Booking.IoC;
 using Booking.Web.Data;
-using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,9 +13,6 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
-
-builder.Services.RegisterDependencies(builder.Configuration);
-builder.Services.AddMediatR(typeof(Program));
 
 var app = builder.Build();
 
@@ -55,7 +50,6 @@ using (var scope = app.Services.CreateScope())
     {
         context.Database.Migrate();
     }
-    services.ApplyMigrations();
 }
 
 app.Run();

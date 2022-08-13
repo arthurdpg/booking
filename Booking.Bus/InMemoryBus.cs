@@ -1,5 +1,6 @@
 ﻿using Booking.Domain.Commands;
 using Booking.Domain.Interfaces.Bus;
+using FluentValidation.Results;
 using MediatR;
 
 namespace Booking.Bus
@@ -13,7 +14,7 @@ namespace Booking.Bus
             _mediator = mediator;
         }
 
-        public Task<CommandResult> SendCommand<T>(T command) where T : ICommand<CommandResult>
+        public Task<ValidationResult> SendCommand<T>(T command) where T : Command
         {
             return _mediator.Send(command);
         }

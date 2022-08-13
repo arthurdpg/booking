@@ -8,9 +8,9 @@ namespace Booking.IoC
     {
         public static void RegisterDependencies(this IServiceCollection services, IConfiguration configuration)
         {
-            var apiConfig = configuration.GetSection("Rules").Get<RulesConfig>();
-            if (apiConfig != null)
-                services.AddSingleton(apiConfig);
+            var rulesConfig = configuration.GetSection("Rules").Get<RulesConfig>();
+            if (rulesConfig != null)
+                services.AddSingleton(rulesConfig);
 
             services.RegisterCommand();
             services.RegisterDatabase(configuration);

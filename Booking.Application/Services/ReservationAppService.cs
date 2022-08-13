@@ -29,25 +29,19 @@ namespace Booking.Application.Services
         public async Task<ValidationResult> Create(ReservationViewModel reservationViewModel)
         {
             var createCommand = _mapper.Map<CreateReservationCommand>(reservationViewModel);
-            var result = await _mediator.SendCommand(createCommand);
-
-            return null;
+            return await _mediator.SendCommand(createCommand);
         }
 
         public async Task<ValidationResult> Delete(Guid id)
         {
             var removeCommand = new DeleteReservationCommand(id);
-            var result = await _mediator.SendCommand(removeCommand);
-
-            return null;
+            return await _mediator.SendCommand(removeCommand);
         }
 
         public async Task<ValidationResult> Update(ReservationViewModel reservationViewModel)
         {
             var updateCommand = _mapper.Map<UpdateReservationCommand>(reservationViewModel);
-            await _mediator.SendCommand(updateCommand);
-
-            return null;
+            return await _mediator.SendCommand(updateCommand);
         }
     }
 }

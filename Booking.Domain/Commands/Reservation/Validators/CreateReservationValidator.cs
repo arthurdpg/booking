@@ -28,7 +28,7 @@ namespace Booking.Domain.Commands.Reservation.Validators
                 .Must(x => x.Date > DateTime.Now.Date).WithMessage(ValidationMessages.InvalidValue);
 
             RuleFor(x => x.To)
-                .LessThan(x => x.From).WithMessage(ValidationMessages.InvalidValue);
+                .GreaterThanOrEqualTo(x => x.From).WithMessage(ValidationMessages.InvalidValue);
         }
     }
 }

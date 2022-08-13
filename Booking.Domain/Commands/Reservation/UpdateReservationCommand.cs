@@ -2,7 +2,7 @@
 
 namespace Booking.Domain.Commands.Reservation
 {
-    public class UpdateReservationCommand : Command, ICommand<CommandResult>
+    public class UpdateReservationCommand : Command
     {
         public string UserId { get; private set; }
         public Guid ReservationId { get; private set; }

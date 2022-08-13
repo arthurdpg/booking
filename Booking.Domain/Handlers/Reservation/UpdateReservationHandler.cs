@@ -3,10 +3,12 @@ using Booking.Domain.Commands.Reservation;
 using Booking.Domain.Configuration;
 using Booking.Domain.Interfaces;
 using Booking.Domain.Interfaces.Queries;
+using FluentValidation.Results;
+using MediatR;
 
 namespace Booking.Domain.Handlers.Reservation
 {
-    public class UpdateReservationHandler : IHandler<UpdateReservationCommand, CommandResult>
+    public class UpdateReservationHandler : CommandHandler, IRequestHandler<UpdateReservationCommand, ValidationResult>
     {
         private readonly IUnitOfWork _uow;
         private readonly IRepository<Models.Reservation> _repository;
@@ -21,25 +23,25 @@ namespace Booking.Domain.Handlers.Reservation
             _config = config;
         }
 
-        public async Task<CommandResult> Handle(UpdateReservationCommand request, CancellationToken cancellationToken)
+        public async Task<ValidationResult> Handle(UpdateReservationCommand request, CancellationToken cancellationToken)
         {
             if (!request.IsValid())
-                return CommandResultFactory.ValidationErrorResult(request);
+                return request.ValidationResult;
 
             var reservation = await _queries.FindById(request.ReservationId);
 
             if (reservation == null)
-                return CommandResultFactory.ErrorResult(Messages.NotFound);
+                return ErrorResult(Messages.NotFound);
 
             if (!reservation.UserId.Equals(request.UserId))
-                return CommandResultFactory.ErrorResult(Messages.AccessDenied);
+                return ErrorResult(Messages.AccessDenied);
 
             var maxDateInAdvance = DateTime.Now.Date.AddDays(_config.MaximumDaysInAdvance);
             if (request.From.Date > maxDateInAdvance || request.To.Date > maxDateInAdvance)
-                return CommandResultFactory.ErrorResult(string.Format(Messages.MaximumDaysInAdvance, _config.MaximumDaysInAdvance));
+                return ErrorResult(string.Format(Messages.MaximumDaysInAdvance, _config.MaximumDaysInAdvance));
 
-            if (request.To.Date.Subtract(request.From.Date).Days > _config.MaximumStayDuration)
-                return CommandResultFactory.ErrorResult(string.Format(Messages.MaximumStayDuration, _config.MaximumStayDuration));
+            if (request.To.Date.Subtract(request.From.Date).Days >= _config.MaximumStayDuration)
+                return ErrorResult(string.Format(Messages.MaximumStayDuration, _config.MaximumStayDuration));
 
             if (request.From.Date < reservation.From.Date || request.To.Date > reservation.To.Date)
             {
@@ -47,15 +49,14 @@ namespace Booking.Domain.Handlers.Reservation
                 var reservations = await _queries.FindByRoomAndRange(reservation.RoomId, request.From.Date, request.To.Date);
 
                 if (reservations.Any(r => r.Id != reservation.Id))
-                    return CommandResultFactory.ErrorResult(Messages.ThereIsAnotherReservationSamePeriod);
+                    return ErrorResult(Messages.ThereIsAnotherReservationSamePeriod);
             }
 
             reservation.Update(request.From.Date, request.To.Date, request.Observations);
 
             _repository.Update(reservation);
-            await _uow.CommitAsync();
 
-            return CommandResultFactory.SuccessResult();
+            return await Commit(_uow);
         }
     }
 }
