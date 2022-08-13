@@ -26,22 +26,27 @@ namespace Booking.Application.Services
             return _mapper.Map<ReservationViewModel>(await _reservationQueries.FindById(id));
         }
 
-        public async Task<ValidationResult> Create(ReservationViewModel reservationViewModel)
+        public async Task<IList<ReservationViewModel>> GetByUserId(string id)
         {
-            var createCommand = _mapper.Map<CreateReservationCommand>(reservationViewModel);
+            return _mapper.Map<IList<ReservationViewModel>>(await _reservationQueries.FindByUserId(id));
+        }
+
+        public async Task<ValidationResult> Create(ManageReservationViewModel model)
+        {
+            var createCommand = _mapper.Map<CreateReservationCommand>(model);
             return await _mediator.SendCommand(createCommand);
+        }
+
+        public async Task<ValidationResult> Update(Guid id, ManageReservationViewModel model)
+        {
+            var updateCommand = new UpdateReservationCommand(model.UserId, id, model.From, model.To, model.Observations);
+            return await _mediator.SendCommand(updateCommand);
         }
 
         public async Task<ValidationResult> Delete(Guid id)
         {
             var removeCommand = new DeleteReservationCommand(id);
             return await _mediator.SendCommand(removeCommand);
-        }
-
-        public async Task<ValidationResult> Update(ReservationViewModel reservationViewModel)
-        {
-            var updateCommand = _mapper.Map<UpdateReservationCommand>(reservationViewModel);
-            return await _mediator.SendCommand(updateCommand);
         }
     }
 }

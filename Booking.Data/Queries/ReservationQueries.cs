@@ -9,6 +9,12 @@ namespace Booking.Data.Queries
     {
         public ReservationQueries(BookingContext db) : base(db) { }
 
+        public async Task<IList<Reservation>> FindByUserId(string userId)
+        {
+            return await DbSet
+                .Where(r => r.UserId == userId)
+                .ToListAsync();
+        }
         public async Task<IList<Reservation>> FindByRoomAndRange(Guid roomId, DateTime from, DateTime to)
         {
             return await DbSet

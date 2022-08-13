@@ -8,11 +8,8 @@ namespace Booking.Application.Mapper
     {
         public ViewModelToCommandProfile()
         {
-            CreateMap<ReservationViewModel, CreateReservationCommand>()
+            CreateMap<ManageReservationViewModel, CreateReservationCommand>()
                 .ConstructUsing(x => new CreateReservationCommand(x.UserId, x.RoomId, x.From, x.To, x.Observations));
-
-            CreateMap<ReservationViewModel, UpdateReservationCommand>()
-                .ConstructUsing(x => new UpdateReservationCommand(x.UserId, x.Id, x.From, x.To, x.Observations));
         }
     }
 }

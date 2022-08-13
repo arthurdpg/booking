@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Booking.Web.Controllers
 {
@@ -9,6 +10,7 @@ namespace Booking.Web.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult MyReservations()
         {
             return View();

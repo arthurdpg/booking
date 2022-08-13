@@ -2,13 +2,13 @@
     $('#txtStartDate').datepicker({
         autoclose: true,
         clearBtn: true,
-        startDate: '-0d',
+        startDate: '+1d',
         endDate: '+30d'
     });
     $('#txtEndDate').datepicker({
         autoclose: true,
         clearBtn: true,
-        startDate: '-0d',
+        startDate: '+1d',
         endDate: '+30d'
     });
 
