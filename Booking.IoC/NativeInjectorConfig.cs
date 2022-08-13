@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Booking.Domain.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Booking.IoC
@@ -7,6 +8,10 @@ namespace Booking.IoC
     {
         public static void RegisterDependencies(this IServiceCollection services, IConfiguration configuration)
         {
+            var apiConfig = configuration.GetSection("Rules").Get<RulesConfig>();
+            if (apiConfig != null)
+                services.AddSingleton(apiConfig);
+
             services.RegisterCommand();
             services.RegisterDatabase(configuration);
         }

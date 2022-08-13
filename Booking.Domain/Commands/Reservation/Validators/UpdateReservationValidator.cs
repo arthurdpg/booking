@@ -24,7 +24,11 @@ namespace Booking.Domain.Commands.Reservation.Validators
             RuleFor(x => x.Observations)
                  .MaximumLength(500).WithMessage(ValidationMessages.MaxLength);
 
-            // Date validations
+            RuleFor(x => x.From)
+                .Must(x => x.Date > DateTime.Now.Date).WithMessage(ValidationMessages.InvalidValue);
+
+            RuleFor(x => x.To)
+                .LessThan(x => x.From).WithMessage(ValidationMessages.InvalidValue);
         }
     }
 }
