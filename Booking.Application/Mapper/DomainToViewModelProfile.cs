@@ -8,7 +8,6 @@ namespace Booking.Application.Mapper
     {
         public DomainToViewModelProfile()
         {
-            CreateMap<Facility, FacilityViewModel>();
             CreateMap<Room, RoomViewModel>();
             CreateMap<Reservation, ReservationViewModel>();
             CreateMap<RoomAvailability, RoomAvailabilityViewModel>();

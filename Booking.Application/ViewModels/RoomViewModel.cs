@@ -8,6 +8,5 @@ namespace Booking.Application.ViewModels
         public RoomType Type { get; private set; }
         public int Size { get; private set; }
         public Guid HotelId { get; private set; }
-        public IList<FacilityViewModel> Facilities { get; private set; }
     }
 }

@@ -4,12 +4,11 @@ namespace Booking.Domain.Models
 {
     public class Room : IDomainModel
     {
-        public Room(Guid id, Hotel hotel, int size, IList<Facility> facilities)
+        public Room(Guid id, Hotel hotel, int size)
         {
             Id = id;
             Hotel = hotel;
             Size = size;
-            Facilities = facilities;
         }
 
         // Empty constructor for EF
@@ -20,7 +19,6 @@ namespace Booking.Domain.Models
         public int Size { get; private set; }
         public Guid HotelId { get; private set; }
         public Hotel Hotel { get; private set; }
-        public IList<Facility> Facilities { get; private set; }
         public IList<Reservation> Reservations { get; private set; }
     }
 }

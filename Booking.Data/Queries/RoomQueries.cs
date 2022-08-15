@@ -12,7 +12,6 @@ namespace Booking.Data.Queries
         public async Task<IList<RoomAvailability>> GetAvailabilityByRange(DateTime from, DateTime to)
         {
             var result = await DbSet
-                .Include(room => room.Facilities)
                 .Include(room => room.Reservations)
                 .Select(room => new RoomAvailability (room, !room.Reservations.Any(x => (x.From >= from && x.From <= to) || (x.To >= from && x.To <= to))))
                 .ToListAsync();
