@@ -27,7 +27,7 @@ It allows the users to check the room availability, reserve it, update or delete
 
 The Web application was not completed, but the user the check the availability and also see their reservations
 
-##What I would like to improve?
+## What I would like to improve?
 
 * Add nginx and load balance
 * Complete the web application
