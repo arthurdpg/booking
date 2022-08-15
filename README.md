@@ -21,6 +21,7 @@ It allows the users to check the room availability, reserve it, update or delete
 ## How to run it
 
 * Run the project using docker-compose
+* The API is hosted in: https://localhost:50003/swagger
 
 
 ## Observations
