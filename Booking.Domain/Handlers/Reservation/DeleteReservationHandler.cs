@@ -32,7 +32,7 @@ namespace Booking.Domain.Handlers.Reservation
             if (reservation.UserId != request.UserId)
                 return ErrorResult(Messages.AccessDenied);
 
-            if (reservation.From >= DateTime.Now.Date)
+            if (reservation.From.Date <= DateTime.Now.Date)
                 return ErrorResult(Messages.ReservationDeteleNotAllowed);
 
             _repository.Delete(reservation);

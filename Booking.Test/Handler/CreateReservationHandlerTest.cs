@@ -46,10 +46,15 @@ namespace Booking.Test.Handlers
             Assert.False(result.IsValid);
         }
 
-        [Theory]
-        [MemberData(nameof(GetValidData))]
-        public async void ShouldNotCreateAnotherReservationExists(string userId, Guid roomId, DateTime from, DateTime to, string observations)
+        [Fact]
+        public async void ShouldNotCreateAnotherReservationExists()
         {
+            var userId = "useremail@domain.com";
+            var roomId = Guid.NewGuid();
+            var from = DateTime.Now.Date.AddDays(1);
+            var to = DateTime.Now.Date.AddDays(1);
+            var observations = "Observations";
+
             _queries.FindByRoomAndRange(roomId, from, to).Returns(GetReservations());
 
             var command = new CreateReservationCommand(userId, roomId, from, to, observations);
@@ -170,6 +175,15 @@ namespace Booking.Test.Handlers
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(29),
                     DateTime.Now.Date.AddDays(31),
+                    "Observations"
+                });
+
+            data.Add(new object[]
+                {
+                    "useremail@domain.com",
+                    Guid.NewGuid(),
+                    DateTime.Now.Date.AddDays(31),
+                    DateTime.Now.Date.AddDays(33),
                     "Observations"
                 });
 
