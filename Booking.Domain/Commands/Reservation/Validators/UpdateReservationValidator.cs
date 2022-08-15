@@ -9,9 +9,6 @@ namespace Booking.Domain.Commands.Reservation.Validators
             RuleFor(x => x.UserId)
                 .NotEmpty().WithMessage(ValidationMessages.Required);
 
-            RuleFor(x => x.UserId)
-                .MaximumLength(255).WithMessage(ValidationMessages.MaxLength);
-
             RuleFor(x => x.ReservationId)
                 .NotEmpty().WithMessage(ValidationMessages.Required);
 
@@ -24,11 +21,11 @@ namespace Booking.Domain.Commands.Reservation.Validators
             RuleFor(x => x.Observations)
                  .MaximumLength(500).WithMessage(ValidationMessages.MaxLength);
 
-            RuleFor(x => x.From)
-                .Must(x => x.Date > DateTime.Now.Date).WithMessage(ValidationMessages.InvalidValue);
-
             RuleFor(x => x.To)
                 .GreaterThanOrEqualTo(x => x.From).WithMessage(ValidationMessages.InvalidValue);
+
+            RuleFor(x => x.To)
+                .Must(x => x.Date >= DateTime.Now.Date).WithMessage(ValidationMessages.InvalidValue);
         }
     }
 }

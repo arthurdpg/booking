@@ -8,7 +8,7 @@ namespace Booking.Test.Validators
     {
         [Theory]
         [MemberData(nameof(GetValidData))]
-        public void ShouldBeValidCommand(string userId, Guid roomId, DateTime from, DateTime to, string observations)
+        public void ShouldBeValidCommand(Guid userId, Guid roomId, DateTime from, DateTime to, string observations)
         {
             var command = new UpdateReservationCommand(userId, roomId, from, to, observations);
             var validator = new UpdateReservationValidator();
@@ -18,7 +18,7 @@ namespace Booking.Test.Validators
 
         [Theory]
         [MemberData(nameof(GetInvalidData))]
-        public void ShouldBeInvalidCommand(string userId, Guid roomId, DateTime from, DateTime to, string observations)
+        public void ShouldBeInvalidCommand(Guid userId, Guid roomId, DateTime from, DateTime to, string observations)
         {
             var command = new UpdateReservationCommand(userId, roomId, from, to, observations);
             var validator = new UpdateReservationValidator();
@@ -32,7 +32,16 @@ namespace Booking.Test.Validators
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
+                    Guid.NewGuid(),
+                    DateTime.Now.Date,
+                    DateTime.Now.Date,
+                    null
+                });
+
+            data.Add(new object[]
+                {
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(1),
                     DateTime.Now.Date.AddDays(1),
@@ -41,7 +50,7 @@ namespace Booking.Test.Validators
 
             data.Add(new object[]
               {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(1),
                     DateTime.Now.Date.AddDays(2),
@@ -50,7 +59,7 @@ namespace Booking.Test.Validators
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(1),
                     DateTime.Now.Date.AddDays(1),
@@ -68,32 +77,32 @@ namespace Booking.Test.Validators
                 {
                     null,
                     null,
-                    DateTime.Now.Date,
-                    DateTime.Now.Date,
+                    DateTime.Now.Date.AddDays(-1),
+                    DateTime.Now.Date.AddDays(-1),
                     null
                 });
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
-                    null,
-                    DateTime.Now.Date,
-                    DateTime.Now.Date,
-                    null
-                });
-
-            data.Add(new object[]
-                {
-                    "useremail@domain.com",
                     Guid.NewGuid(),
-                    DateTime.Now.Date,
-                    DateTime.Now.Date,
+                    null,
+                    DateTime.Now.Date.AddDays(-1),
+                    DateTime.Now.Date.AddDays(-1),
                     null
                 });
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
+                    Guid.NewGuid(),
+                    DateTime.Now.Date.AddDays(1),
+                    DateTime.Now.Date.AddDays(-1),
+                    null
+                });
+
+            data.Add(new object[]
+                {
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(1),
                     DateTime.Now.Date,
@@ -102,7 +111,7 @@ namespace Booking.Test.Validators
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(2),
                     DateTime.Now.Date.AddDays(1),
@@ -111,19 +120,10 @@ namespace Booking.Test.Validators
 
             data.Add(new object[]
                 {
-                    "useremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailus@domain.com",
                     Guid.NewGuid(),
-                    DateTime.Now.Date.AddDays(1),
-                    DateTime.Now.Date.AddDays(1),
-                    null
-                });
-
-            data.Add(new object[]
-                {
-                    "useremail@domain.com",
                     Guid.NewGuid(),
-                    DateTime.Now.Date.AddDays(1),
-                    DateTime.Now.Date.AddDays(1),
+                    DateTime.Now.Date,
+                    DateTime.Now.Date,
                     "ObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservati"
                 });
 

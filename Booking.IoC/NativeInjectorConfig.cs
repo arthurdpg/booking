@@ -16,8 +16,12 @@ namespace Booking.IoC
             services.RegisterDatabase(configuration);
         }
 
-        public static void ApplyIdentity(this IServiceCollection services, IConfiguration configuration)
+        public static void ApplyWebConfigs(this IServiceCollection services, IConfiguration configuration)
         {
+            var apiConfig = configuration.GetSection("Api").Get<ApiConfig>();
+            if (apiConfig != null)
+                services.AddSingleton(apiConfig);
+
             services.ApplyDefaultIdentity(configuration);
         }
 

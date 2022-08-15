@@ -28,7 +28,7 @@ namespace Booking.Test.Handlers
 
         [Theory]
         [MemberData(nameof(GetValidData))]
-        public async void ShouldCreate(string userId, Guid roomId, DateTime from, DateTime to, string observations)
+        public async void ShouldCreate(Guid userId, Guid roomId, DateTime from, DateTime to, string observations)
         {
             var command = new CreateReservationCommand(userId, roomId, from, to, observations);
             var handler = new CreateReservationHandler(_uow, _repository, _queries, _config);
@@ -38,7 +38,7 @@ namespace Booking.Test.Handlers
 
         [Theory]
         [MemberData(nameof(GetInvalidData))]
-        public async void ShouldNotCreate(string userId, Guid roomId, DateTime from, DateTime to, string observations)
+        public async void ShouldNotCreate(Guid userId, Guid roomId, DateTime from, DateTime to, string observations)
         {
             var command = new CreateReservationCommand(userId, roomId, from, to, observations);
             var handler = new CreateReservationHandler(_uow, _repository, _queries, _config);
@@ -49,7 +49,7 @@ namespace Booking.Test.Handlers
         [Fact]
         public async void ShouldNotCreateAnotherReservationExists()
         {
-            var userId = "useremail@domain.com";
+            var userId = Guid.NewGuid();
             var roomId = Guid.NewGuid();
             var from = DateTime.Now.Date.AddDays(1);
             var to = DateTime.Now.Date.AddDays(1);
@@ -65,7 +65,7 @@ namespace Booking.Test.Handlers
 
         public static IList<Reservation> GetReservations()
         {
-            return new List<Reservation> { new Reservation(Guid.NewGuid(), Guid.NewGuid(), "useremail@domain.com", DateTime.Now.Date.AddDays(1), DateTime.Now.Date.AddDays(1), "Observations") };
+            return new List<Reservation> { new Reservation(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), DateTime.Now.Date.AddDays(1), DateTime.Now.Date.AddDays(1), "Observations") };
         }
 
         public static IEnumerable<object[]> GetValidData()
@@ -74,7 +74,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(1),
                     DateTime.Now.Date.AddDays(1),
@@ -83,7 +83,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
               {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(1),
                     DateTime.Now.Date.AddDays(2),
@@ -92,7 +92,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(1),
                     DateTime.Now.Date.AddDays(1),
@@ -117,7 +117,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     null,
                     DateTime.Now.Date,
                     DateTime.Now.Date,
@@ -126,7 +126,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                   Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date,
                     DateTime.Now.Date,
@@ -135,7 +135,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(1),
                     DateTime.Now.Date,
@@ -144,7 +144,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(2),
                     DateTime.Now.Date.AddDays(1),
@@ -153,16 +153,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                 {
-                    "useremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailus@domain.com",
                     Guid.NewGuid(),
-                    DateTime.Now.Date.AddDays(1),
-                    DateTime.Now.Date.AddDays(1),
-                    null
-                });
-
-            data.Add(new object[]
-                {
-                    "useremail@domain.com",
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(1),
                     DateTime.Now.Date.AddDays(1),
@@ -171,7 +162,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(29),
                     DateTime.Now.Date.AddDays(31),
@@ -180,7 +171,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(31),
                     DateTime.Now.Date.AddDays(33),
@@ -189,7 +180,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(1),
                     DateTime.Now.Date.AddDays(4),

@@ -8,7 +8,7 @@ namespace Booking.Application.ViewModels
         public Guid RoomId { get; set; }
 
         [Required(ErrorMessage = ValidationMessages.Required)]
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
 
         [Required(ErrorMessage = ValidationMessages.Required)]
         public DateTime From { get; set; }

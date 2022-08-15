@@ -15,7 +15,7 @@ namespace Booking.Api.Controllers
             _roomAppService = roomAppService;
         }
 
-        [HttpGet(Name = "room-Availability")]
+        [HttpGet(Name = "room-availability")]
         public async Task<IList<RoomAvailabilityViewModel>> Get(DateTime from, DateTime to)
         {
             return await _roomAppService.GetAvailabilityByRange(from, to);

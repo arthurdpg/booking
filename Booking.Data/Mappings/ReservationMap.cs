@@ -16,8 +16,6 @@ namespace Booking.Data.Mappings
                 .IsRequired();
 
             builder.Property(x => x.UserId)
-                .HasColumnType("nvarchar(255)")
-                .HasMaxLength(255)
                 .IsRequired();
 
             builder.Property(x => x.From)

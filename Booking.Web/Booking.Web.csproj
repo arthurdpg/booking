@@ -10,10 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Controllers\ReservationController.cs~RF1b8718a.TMP" />
     <None Remove="Views\Home\Index.cshtml~RF2c6c297.TMP" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.8" />

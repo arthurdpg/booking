@@ -8,7 +8,7 @@ namespace Booking.Test.Validators
     {
         [Theory]
         [MemberData(nameof(GetValidData))]
-        public void ShouldBeValidCommand(string userId, Guid reservationId)
+        public void ShouldBeValidCommand(Guid userId, Guid reservationId)
         {
             var command = new DeleteReservationCommand(userId, reservationId);
             var validator = new DeleteReservationValidator();
@@ -18,7 +18,7 @@ namespace Booking.Test.Validators
 
         [Theory]
         [MemberData(nameof(GetInvalidData))]
-        public void ShouldBeInvalidCommand(string userId, Guid reservationId)
+        public void ShouldBeInvalidCommand(Guid userId, Guid reservationId)
         {
             var command = new DeleteReservationCommand(userId, reservationId);
             var validator = new DeleteReservationValidator();
@@ -32,7 +32,7 @@ namespace Booking.Test.Validators
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid()
                 });
 
@@ -57,15 +57,9 @@ namespace Booking.Test.Validators
 
             data.Add(new object[]
                {
-                    string.Empty,
-                    Guid.NewGuid()
+                    Guid.NewGuid(),
+                    null
                });
-
-            data.Add(new object[]
-                {
-                    "useremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailus@domain.com",
-                    Guid.NewGuid()
-                });
 
             return data;
         }

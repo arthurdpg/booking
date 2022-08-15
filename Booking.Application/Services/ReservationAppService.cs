@@ -21,12 +21,12 @@ namespace Booking.Application.Services
             _mediator = mediator;
         }
 
-        public async Task<IList<ReservationViewModel>> GetByUserId(string userId)
+        public async Task<IList<ReservationViewModel>> GetByUserId(Guid userId)
         {
             return _mapper.Map<IList<ReservationViewModel>>(await _reservationQueries.FindByUserId(userId));
         }
 
-        public async Task<ReservationViewModel> GetByUserReservationId(string userId, Guid reservationId)
+        public async Task<ReservationViewModel> GetByUserReservationId(Guid userId, Guid reservationId)
         {
             return _mapper.Map<ReservationViewModel>(await _reservationQueries.FindByUserReservationId(userId, reservationId));
         }
@@ -37,13 +37,13 @@ namespace Booking.Application.Services
             return await _mediator.SendCommand(createCommand);
         }
 
-        public async Task<ValidationResult> Update(Guid id, ManageReservationViewModel model)
+        public async Task<ValidationResult> Update(Guid reservationId, ManageReservationViewModel model)
         {
-            var updateCommand = new UpdateReservationCommand(model.UserId, id, model.From, model.To, model.Observations);
+            var updateCommand = new UpdateReservationCommand(model.UserId, reservationId, model.From, model.To, model.Observations);
             return await _mediator.SendCommand(updateCommand);
         }
 
-        public async Task<ValidationResult> Delete(string userId, Guid reservationId)
+        public async Task<ValidationResult> Delete(Guid userId, Guid reservationId)
         {
             var removeCommand = new DeleteReservationCommand(userId, reservationId);
             return await _mediator.SendCommand(removeCommand);

@@ -25,7 +25,7 @@ namespace Booking.Test.Handlers
 
         [Theory]
         [MemberData(nameof(GetValidData))]
-        public async void ShouldDelete(string userId, Guid reservationId)
+        public async void ShouldDelete(Guid userId, Guid reservationId)
         {
             _queries.FindById(reservationId).Returns(GetReservation(userId));
 
@@ -37,7 +37,7 @@ namespace Booking.Test.Handlers
 
         [Theory]
         [MemberData(nameof(GetInvalidData))]
-        public async void ShouldNotDelete(string userId, Guid reservationId)
+        public async void ShouldNotDelete(Guid userId, Guid reservationId)
         {
             _queries.FindById(reservationId).Returns(GetReservation(userId));
 
@@ -50,7 +50,7 @@ namespace Booking.Test.Handlers
         [Fact]
         public async void ShouldNotDeleteNotFound()
         {
-            var userId = "useremail@domain.com";
+            var userId = Guid.NewGuid();
             var reservationId = Guid.NewGuid();
             _queries.FindById(reservationId).Returns((Reservation)null);
 
@@ -63,9 +63,9 @@ namespace Booking.Test.Handlers
         [Fact]
         public async void ShouldNotDeleteNotAllowed()
         {
-            var userId = "useremail@domain.com";
+            var userId = Guid.NewGuid();
             var reservationId = Guid.NewGuid();
-            _queries.FindById(reservationId).Returns(GetReservation("anotheruseremail@domain.com"));
+            _queries.FindById(reservationId).Returns(GetReservation(Guid.NewGuid()));
 
             var command = new DeleteReservationCommand(userId, reservationId);
             var handler = new DeleteReservationHandler(_uow, _repository, _queries);
@@ -76,7 +76,7 @@ namespace Booking.Test.Handlers
         [Fact]
         public async void ShouldNotDeleteReservationAlreadyStarted()
         {
-            var userId = "useremail@domain.com";
+            var userId = Guid.NewGuid();
             var reservationId = Guid.NewGuid();
             _queries.FindById(reservationId).Returns(GetStartedReservation());
 
@@ -86,14 +86,14 @@ namespace Booking.Test.Handlers
             Assert.False(result.IsValid);
         }
 
-        public static Reservation GetReservation(string userId)
+        public static Reservation GetReservation(Guid userId)
         {
             return new Reservation(Guid.NewGuid(), Guid.NewGuid(), userId, DateTime.Now.Date.AddDays(1), DateTime.Now.Date.AddDays(1), "Observations");
         }
 
         public static Reservation GetStartedReservation()
         {
-            return new Reservation(Guid.NewGuid(), Guid.NewGuid(), "useremail@domain.com", DateTime.Now.Date, DateTime.Now.Date.AddDays(1), "Observations");
+            return new Reservation(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), DateTime.Now.Date, DateTime.Now.Date.AddDays(1), "Observations");
         }
 
         public static IEnumerable<object[]> GetValidData()
@@ -102,7 +102,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid()
                 });
 
@@ -127,15 +127,9 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                {
-                    string.Empty,
-                    Guid.NewGuid()
+                    Guid.NewGuid(),
+                    null
                });
-
-            data.Add(new object[]
-                {
-                    "useremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailus@domain.com",
-                    Guid.NewGuid()
-                });
 
             return data;
         }

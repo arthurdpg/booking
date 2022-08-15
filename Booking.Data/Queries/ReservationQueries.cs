@@ -9,14 +9,14 @@ namespace Booking.Data.Queries
     {
         public ReservationQueries(BookingContext db) : base(db) { }
 
-        public async Task<IList<Reservation>> FindByUserId(string userId)
+        public async Task<IList<Reservation>> FindByUserId(Guid userId)
         {
             return await DbSet
                 .Where(r => r.UserId == userId)
                 .ToListAsync();
         }
 
-        public async Task<Reservation> FindByUserReservationId(string userId, Guid reservationId)
+        public async Task<Reservation> FindByUserReservationId(Guid userId, Guid reservationId)
         {
             return await DbSet
                 .FirstOrDefaultAsync(r => r.UserId == userId && r.Id == reservationId);

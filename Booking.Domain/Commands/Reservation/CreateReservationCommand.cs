@@ -4,13 +4,13 @@ namespace Booking.Domain.Commands.Reservation
 {
     public class CreateReservationCommand : Command
     {
-        public string UserId { get; private set; }
+        public Guid UserId { get; private set; }
         public Guid RoomId { get; private set; }
         public DateTime From { get; private set; }
         public DateTime To { get; private set; }
         public string Observations { get; private set; }
 
-        public CreateReservationCommand(string userId, Guid roomId, DateTime from, DateTime to, string observations)
+        public CreateReservationCommand(Guid userId, Guid roomId, DateTime from, DateTime to, string observations)
         {
             UserId = userId;
             RoomId = roomId;

@@ -27,20 +27,20 @@ namespace Booking.Api.Controllers
             return !ModelState.IsValid ? CustomResponse(ModelState) : CustomResponse(await _reservationAppService.Update(reservationId, model));
         }
 
-        [HttpGet("user/{userId}")]
-        public async Task<IList<ReservationViewModel>> GetByUser([FromRoute] string userId)
+        [HttpGet("user/{userId:guid}")]
+        public async Task<IList<ReservationViewModel>> GetByUser([FromRoute] Guid userId)
         {
             return await _reservationAppService.GetByUserId(userId);
         }
 
-        [HttpGet("user/{userId}/{reservationId:guid}")]
-        public async Task<ReservationViewModel> Get([FromRoute] string userId, [FromRoute] Guid reservationId)
+        [HttpGet("user/{userId:guid}/{reservationId:guid}")]
+        public async Task<ReservationViewModel> Get([FromRoute] Guid userId, [FromRoute] Guid reservationId)
         {
             return await _reservationAppService.GetByUserReservationId(userId, reservationId);
         }
 
-        [HttpDelete("user/{userId}/{reservationId:guid}")]
-        public async Task<IActionResult> Delete([FromRoute] string userId, [FromRoute] Guid reservationId)
+        [HttpDelete("user/{userId:guid}/{reservationId:guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid userId, [FromRoute] Guid reservationId)
         {
             return CustomResponse(await _reservationAppService.Delete(userId, reservationId));
         }

@@ -2,7 +2,7 @@
 {
     public class Reservation : IDomainModel
     {
-        public Reservation(Guid id, Guid roomId, string userId, DateTime from, DateTime to, string observations)
+        public Reservation(Guid id, Guid roomId, Guid userId, DateTime from, DateTime to, string observations)
         {
             Id = id;
             RoomId = roomId;
@@ -18,7 +18,7 @@
         public Guid Id { get; private set; }
         public Guid RoomId { get; private set; }
         public Room Room { get; private set; }
-        public string UserId { get; private set; }
+        public Guid UserId { get; private set; }
         public DateTime From { get; private set; }
         public DateTime To { get; private set; }
         public string Observations { get; private set; }

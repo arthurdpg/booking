@@ -46,9 +46,6 @@ namespace Booking.Domain.Handlers.Reservation
             if (reservation.From.Date <= DateTime.Now.Date && (reservation.From.Date != request.From.Date))
                 return ErrorResult(Messages.ReservationUpdateNotAllowed);
 
-            if (reservation.From.Date <= DateTime.Now.Date && request.To < DateTime.Now.Date)
-                return ErrorResult(Messages.ReservationUpdateNotAllowed);
-
             if (request.From.Date < reservation.From.Date || request.To.Date > reservation.To.Date)
             {
                 // Needs to check the availability

@@ -8,9 +8,6 @@ services:
     ports:
       - "50000:80"
       - "50001:443"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     depends_on:
         - booking.sql
         - booking.api
@@ -21,9 +18,6 @@ services:
     ports:
       - "50002:80"
       - "50003:443"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     depends_on:
         - booking.sql
   booking.sql:

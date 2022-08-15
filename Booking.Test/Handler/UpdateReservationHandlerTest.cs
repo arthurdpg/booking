@@ -28,9 +28,9 @@ namespace Booking.Test.Handlers
 
         [Theory]
         [MemberData(nameof(GetValidData))]
-        public async void ShouldUpdate(string userId, Guid reservationId, DateTime from, DateTime to, string observations)
+        public async void ShouldUpdate(Guid userId, Guid reservationId, DateTime from, DateTime to, string observations)
         {
-            _queries.FindById(reservationId).Returns(GetReservation());
+            _queries.FindById(reservationId).Returns(GetReservation(userId));
 
             var command = new UpdateReservationCommand(userId, reservationId, from, to, observations);
             var handler = new UpdateReservationHandler(_uow, _repository, _queries, _config);
@@ -40,9 +40,9 @@ namespace Booking.Test.Handlers
 
         [Theory]
         [MemberData(nameof(GetInvalidData))]
-        public async void ShouldNotUpdate(string userId, Guid reservationId, DateTime from, DateTime to, string observations)
+        public async void ShouldNotUpdate(Guid userId, Guid reservationId, DateTime from, DateTime to, string observations)
         {
-            _queries.FindById(reservationId).Returns(GetReservation());
+            _queries.FindById(reservationId).Returns(GetReservation(userId));
 
             var command = new UpdateReservationCommand(userId, reservationId, from, to, observations);
             var handler = new UpdateReservationHandler(_uow, _repository, _queries, _config);
@@ -53,7 +53,7 @@ namespace Booking.Test.Handlers
         [Fact]
         public async void ShouldNotUpdateNotFound()
         {
-            var userId = "useremail@domain.com";
+            var userId = Guid.NewGuid();
             var reservationId = Guid.NewGuid();
             var from = DateTime.Now.Date.AddDays(1);
             var to = DateTime.Now.Date.AddDays(1);
@@ -70,13 +70,13 @@ namespace Booking.Test.Handlers
         [Fact]
         public async void ShouldNotUpdatFromWhenReservationAlreadyStarted()
         {
-            var userId = "useremail@domain.com";
+            var userId = Guid.NewGuid();
             var reservationId = Guid.NewGuid();
             var from = DateTime.Now.Date.AddDays(1);
             var to = DateTime.Now.Date.AddDays(1);
             var observations = "Observations";
 
-            _queries.FindById(reservationId).Returns(GetReservation(DateTime.Now.Date, DateTime.Now.Date.AddDays(1)));
+            _queries.FindById(reservationId).Returns(GetReservation(userId, DateTime.Now.Date, DateTime.Now.Date.AddDays(1)));
 
             var command = new UpdateReservationCommand(userId, reservationId, from, to, observations);
             var handler = new UpdateReservationHandler(_uow, _repository, _queries, _config);
@@ -87,13 +87,13 @@ namespace Booking.Test.Handlers
         [Fact]
         public async void ShouldNotUpdateToBeforeTodayWhenReservationAlreadyStarted()
         {
-            var userId = "useremail@domain.com";
+            var userId = Guid.NewGuid();
             var reservationId = Guid.NewGuid();
             var from = DateTime.Now.Date.AddDays(-2);
             var to = DateTime.Now.Date.AddDays(-1);
             var observations = "Observations";
 
-            _queries.FindById(reservationId).Returns(GetReservation(DateTime.Now.Date.AddDays(-2), DateTime.Now.Date.AddDays(1)));
+            _queries.FindById(reservationId).Returns(GetReservation(userId, DateTime.Now.Date.AddDays(-2), DateTime.Now.Date.AddDays(1)));
 
             var command = new UpdateReservationCommand(userId, reservationId, from, to, observations);
             var handler = new UpdateReservationHandler(_uow, _repository, _queries, _config);
@@ -104,13 +104,13 @@ namespace Booking.Test.Handlers
         [Fact]
         public async void ShouldNotUpdateAnotherReservationExists()
         {
-            var userId = "useremail@domain.com";
+            var userId = Guid.NewGuid();
             var reservationId = Guid.NewGuid();
             var from = DateTime.Now.Date.AddDays(1);
             var to = DateTime.Now.Date.AddDays(3);
             var observations = "Observations";
 
-            _queries.FindById(reservationId).Returns(GetReservation());
+            _queries.FindById(reservationId).Returns(GetReservation(userId));
             _queries.FindByRoomAndRange(default, default, default).ReturnsForAnyArgs(GetReservations());
 
             var command = new UpdateReservationCommand(userId, reservationId, from, to, observations);
@@ -119,19 +119,19 @@ namespace Booking.Test.Handlers
             Assert.False(result.IsValid);
         }
 
-        public static Reservation GetReservation()
+        public static Reservation GetReservation(Guid userId)
         {
-            return GetReservation(DateTime.Now.Date.AddDays(1), DateTime.Now.Date.AddDays(1));
+            return GetReservation(userId, DateTime.Now.Date.AddDays(1), DateTime.Now.Date.AddDays(1));
         }
 
-        public static Reservation GetReservation(DateTime from, DateTime to)
+        public static Reservation GetReservation(Guid userId, DateTime from, DateTime to)
         {
-            return new Reservation(Guid.NewGuid(), Guid.NewGuid(), "useremail@domain.com", from, to, "Observations");
+            return new Reservation(Guid.NewGuid(), Guid.NewGuid(), userId, from, to, "Observations");
         }
 
         public static IList<Reservation> GetReservations()
         {
-            return new List<Reservation> { GetReservation() };
+            return new List<Reservation> { GetReservation(Guid.NewGuid()) };
         }
 
         public static IEnumerable<object[]> GetValidData()
@@ -140,7 +140,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(1),
                     DateTime.Now.Date.AddDays(1),
@@ -149,7 +149,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
               {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(1),
                     DateTime.Now.Date.AddDays(2),
@@ -158,7 +158,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(1),
                     DateTime.Now.Date.AddDays(1),
@@ -176,32 +176,32 @@ namespace Booking.Test.Handlers
                 {
                     null,
                     null,
-                    DateTime.Now.Date,
-                    DateTime.Now.Date,
+                    DateTime.Now.Date.AddDays(-1),
+                    DateTime.Now.Date.AddDays(-1),
                     null
                 });
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
-                    null,
-                    DateTime.Now.Date,
-                    DateTime.Now.Date,
-                    null
-                });
-
-            data.Add(new object[]
-                {
-                    "useremail@domain.com",
                     Guid.NewGuid(),
-                    DateTime.Now.Date,
-                    DateTime.Now.Date,
+                    null,
+                    DateTime.Now.Date.AddDays(-1),
+                    DateTime.Now.Date.AddDays(-1),
                     null
                 });
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
+                    Guid.NewGuid(),
+                    DateTime.Now.Date.AddDays(1),
+                    DateTime.Now.Date.AddDays(-1),
+                    null
+                });
+
+            data.Add(new object[]
+                {
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(1),
                     DateTime.Now.Date,
@@ -210,7 +210,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(2),
                     DateTime.Now.Date.AddDays(1),
@@ -219,25 +219,16 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                 {
-                    "useremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailuseremailus@domain.com",
                     Guid.NewGuid(),
-                    DateTime.Now.Date.AddDays(1),
-                    DateTime.Now.Date.AddDays(1),
-                    null
-                });
-
-            data.Add(new object[]
-                {
-                    "useremail@domain.com",
                     Guid.NewGuid(),
-                    DateTime.Now.Date.AddDays(1),
-                    DateTime.Now.Date.AddDays(1),
+                    DateTime.Now.Date,
+                    DateTime.Now.Date,
                     "ObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservationsObservati"
                 });
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(29),
                     DateTime.Now.Date.AddDays(31),
@@ -246,7 +237,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                 {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(31),
                     DateTime.Now.Date.AddDays(33),
@@ -255,7 +246,7 @@ namespace Booking.Test.Handlers
 
             data.Add(new object[]
                {
-                    "useremail@domain.com",
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     DateTime.Now.Date.AddDays(1),
                     DateTime.Now.Date.AddDays(4),

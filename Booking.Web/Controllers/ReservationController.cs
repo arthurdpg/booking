@@ -1,33 +1,37 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Booking.Application.ViewModels;
+using Booking.Domain.Configuration;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Http.Headers;
+using System.Net;
 
 namespace Booking.Web.Controllers
 {
-    public class ReservationController : Controller
+    public class ReservationController : BaseController
     {
+        private readonly ApiConfig _config;
+        public ReservationController(ApiConfig config)
+        {
+            _config = config;
+        }
+
         public IActionResult Details()
         {
             return View();
         }
 
         [Authorize]
-        public IActionResult MyReservations()
+        public async Task<IActionResult> MyReservations()
         {
             using (var httpClient = GetHttpClient())
             {
-                var response = httpClient.GetAsync("http://booking.api:50002/api/Reservation/user/arthurdpg@gmail.com/38393000-418d-4070-8a45-83a6b7401383").Result;
+                var response = httpClient.GetAsync(string.Format(_config.MyReservations, GetUserId())).Result;
 
+                if (response.IsSuccessStatusCode)
+                {
+                    var reservations = await response.Content.ReadAsAsync<IList<ReservationViewModel>>();
+                }
             }
             return View();
-        }
-
-        private HttpClient GetHttpClient()
-        {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            return client;
         }
     }
 }
