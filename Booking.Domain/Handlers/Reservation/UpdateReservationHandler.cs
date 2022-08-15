@@ -43,6 +43,12 @@ namespace Booking.Domain.Handlers.Reservation
             if (request.To.Date.Subtract(request.From.Date).Days >= _config.MaximumStayDuration)
                 return ErrorResult(string.Format(Messages.MaximumStayDuration, _config.MaximumStayDuration));
 
+            if (reservation.From.Date >= DateTime.Now.Date && (reservation.From.Date != request.From.Date))
+                return ErrorResult(Messages.ReservationUpdateNotAllowed);
+
+            if (reservation.From.Date >= DateTime.Now.Date && request.To < DateTime.Now.Date)
+                return ErrorResult(Messages.ReservationUpdateNotAllowed);
+
             if (request.From.Date < reservation.From.Date || request.To.Date > reservation.To.Date)
             {
                 // Needs to check the availability

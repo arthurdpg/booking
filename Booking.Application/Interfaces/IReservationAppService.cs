@@ -5,10 +5,10 @@ namespace Booking.Application.Interfaces
 {
     public interface IReservationAppService
     {
-        Task<ReservationViewModel> GetById(Guid id);
-        Task<IList<ReservationViewModel>> GetByUserId(string id);
-        Task<ValidationResult> Create(ManageReservationViewModel reservationViewModel);
-        Task<ValidationResult> Update(Guid id, ManageReservationViewModel reservationViewModel);
-        Task<ValidationResult> Delete(Guid id);
+        Task<IList<ReservationViewModel>> GetByUserId(string userId);
+        Task<ReservationViewModel> GetByUserReservationId(string userId, Guid reservationId);
+        Task<ValidationResult> Create(ManageReservationViewModel model);
+        Task<ValidationResult> Update(Guid id, ManageReservationViewModel model);
+        Task<ValidationResult> Delete(string userId, Guid reservationId);
     }
 }

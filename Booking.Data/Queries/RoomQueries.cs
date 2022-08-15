@@ -9,11 +9,15 @@ namespace Booking.Data.Queries
     {
         public RoomQueries(BookingContext db) : base(db) { }
 
-        public async Task<IList<Room>> GetAvailabilityByRange(DateTime from, DateTime to)
+        public async Task<IList<RoomAvailability>> GetAvailabilityByRange(DateTime from, DateTime to)
         {
-            return await DbSet
-                .Include(r => r.Facilities)
+            var result = await DbSet
+                .Include(room => room.Facilities)
+                .Include(room => room.Reservations)
+                .Select(room => new RoomAvailability (room, !room.Reservations.Any(x => (x.From >= from && x.From <= to) || (x.To >= from && x.To <= to))))
                 .ToListAsync();
+
+            return result;
         }
     }
 }

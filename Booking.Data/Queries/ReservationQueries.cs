@@ -15,6 +15,13 @@ namespace Booking.Data.Queries
                 .Where(r => r.UserId == userId)
                 .ToListAsync();
         }
+
+        public async Task<Reservation> FindByUserReservationId(string userId, Guid reservationId)
+        {
+            return await DbSet
+                .FirstOrDefaultAsync(r => r.UserId == userId && r.Id == reservationId);
+        }
+
         public async Task<IList<Reservation>> FindByRoomAndRange(Guid roomId, DateTime from, DateTime to)
         {
             return await DbSet

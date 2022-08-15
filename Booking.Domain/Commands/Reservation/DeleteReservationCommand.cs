@@ -6,10 +6,12 @@ namespace Booking.Domain.Commands.Reservation
 {
     public class DeleteReservationCommand : Command
     {
+        public string UserId { get; private set; }
         public Guid ReservationId { get; private set; }
 
-        public DeleteReservationCommand(Guid reservationId)
+        public DeleteReservationCommand(string userId, Guid reservationId)
         {
+            UserId = userId;
             ReservationId = reservationId;
         }
 

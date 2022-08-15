@@ -11,6 +11,7 @@ namespace Booking.Application.Mapper
             CreateMap<Facility, FacilityViewModel>();
             CreateMap<Room, RoomViewModel>();
             CreateMap<Reservation, ReservationViewModel>();
+            CreateMap<RoomAvailability, RoomAvailabilityViewModel>();
         }
     }
 }

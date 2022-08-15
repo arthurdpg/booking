@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Booking.Web.Data
+namespace Booking.Data.Contexts
 {
     public class ApplicationDbContext : IdentityDbContext
     {

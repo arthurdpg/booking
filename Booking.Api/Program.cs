@@ -16,6 +16,15 @@ builder.Services.RegisterDependencies(builder.Configuration);
 builder.Services.RegisterAppServices();
 builder.Services.AddMediatR(typeof(Program));
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
+            builder.WithOrigins("https://localhost:50001");
+        });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

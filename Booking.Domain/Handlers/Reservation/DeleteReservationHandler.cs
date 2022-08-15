@@ -29,6 +29,12 @@ namespace Booking.Domain.Handlers.Reservation
             if (reservation == null)
                 return ErrorResult(Messages.NotFound);
 
+            if (reservation.UserId != request.UserId)
+                return ErrorResult(Messages.AccessDenied);
+
+            if (reservation.From >= DateTime.Now.Date)
+                return ErrorResult(Messages.ReservationDeteleNotAllowed);
+
             _repository.Delete(reservation);
 
             return await Commit(_uow);

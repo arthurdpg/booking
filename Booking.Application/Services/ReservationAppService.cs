@@ -21,14 +21,14 @@ namespace Booking.Application.Services
             _mediator = mediator;
         }
 
-        public async Task<ReservationViewModel> GetById(Guid id)
+        public async Task<IList<ReservationViewModel>> GetByUserId(string userId)
         {
-            return _mapper.Map<ReservationViewModel>(await _reservationQueries.FindById(id));
+            return _mapper.Map<IList<ReservationViewModel>>(await _reservationQueries.FindByUserId(userId));
         }
 
-        public async Task<IList<ReservationViewModel>> GetByUserId(string id)
+        public async Task<ReservationViewModel> GetByUserReservationId(string userId, Guid reservationId)
         {
-            return _mapper.Map<IList<ReservationViewModel>>(await _reservationQueries.FindByUserId(id));
+            return _mapper.Map<ReservationViewModel>(await _reservationQueries.FindByUserReservationId(userId, reservationId));
         }
 
         public async Task<ValidationResult> Create(ManageReservationViewModel model)
@@ -43,9 +43,9 @@ namespace Booking.Application.Services
             return await _mediator.SendCommand(updateCommand);
         }
 
-        public async Task<ValidationResult> Delete(Guid id)
+        public async Task<ValidationResult> Delete(string userId, Guid reservationId)
         {
-            var removeCommand = new DeleteReservationCommand(id);
+            var removeCommand = new DeleteReservationCommand(userId, reservationId);
             return await _mediator.SendCommand(removeCommand);
         }
     }

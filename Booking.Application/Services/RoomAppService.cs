@@ -16,9 +16,9 @@ namespace Booking.Application.Services
             _roomQueries = roomQueries;
         }
 
-        public async Task<IList<RoomViewModel>> GetAvailabilityByRange(DateTime from, DateTime to)
+        public async Task<IList<RoomAvailabilityViewModel>> GetAvailabilityByRange(DateTime from, DateTime to)
         {
-            return _mapper.Map<IList<RoomViewModel>>(await _roomQueries.GetAvailabilityByRange(from, to));
+            return _mapper.Map<IList<RoomAvailabilityViewModel>>(await _roomQueries.GetAvailabilityByRange(from, to));
         }
     }
 }

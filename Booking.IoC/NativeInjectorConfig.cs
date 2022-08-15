@@ -16,6 +16,11 @@ namespace Booking.IoC
             services.RegisterDatabase(configuration);
         }
 
+        public static void ApplyIdentity(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.ApplyDefaultIdentity(configuration);
+        }
+
         public static void ApplyMigrations(this IServiceProvider services)
         {
             services.ApplyDatabaseMigrations();
