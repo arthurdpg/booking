@@ -1,5 +1,4 @@
 ﻿using Booking.Application.Interfaces;
-using Booking.Application.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Booking.Api.Controllers
@@ -16,9 +15,12 @@ namespace Booking.Api.Controllers
         }
 
         [HttpGet("room-availability")]
-        public async Task<IList<RoomAvailabilityViewModel>> Get(DateTime from, DateTime to)
+        public async Task<IActionResult> Get(DateTime from, DateTime to)
         {
-            return await _roomAppService.GetAvailabilityByRange(from, to);
+            if (from.Date <= DateTime.Now.Date || from.Date > to.Date)
+                return BadRequest();
+
+            return Ok(await _roomAppService.GetAvailabilityByRange(from, to));
         }
     }
 }
