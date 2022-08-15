@@ -11,7 +11,7 @@ It allows the users to check the room availability, reserve it, update or delete
 * Entity Framework
 * Xunit
 * Docker
-* Login/Register user using - Web Application (ASP.NET Identity)
+* Login/Register user using ASP.NET Identity - Web Application
 
 
 ## Pre-requirements
