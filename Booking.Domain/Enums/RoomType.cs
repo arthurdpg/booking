@@ -1,8 +1,12 @@
-﻿namespace Booking.Domain.Enums
+﻿using System.ComponentModel;
+
+namespace Booking.Domain.Enums
 {
     public enum RoomType
     {
-        StandardTwinBed = 0,
+        [Description("Standard room - twin bed")]
+        StandardTwinBed = 1,
+        [Description("Standard room - double bed")]
         StandardDoubleBed
     }
 }

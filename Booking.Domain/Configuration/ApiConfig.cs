@@ -2,7 +2,7 @@
 {
     public class ApiConfig
     {
-        public string MyReservations { get; set; }
-        public string RoomAvailability { get; set; }
+        public string Reservation { get; set; }
+        public string Room { get; set; }
     }
 }

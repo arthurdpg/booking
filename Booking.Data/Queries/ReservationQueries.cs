@@ -12,6 +12,8 @@ namespace Booking.Data.Queries
         public async Task<IList<Reservation>> FindByUserId(Guid userId)
         {
             return await DbSet
+                .Include(r => r.Room)
+                .Include(r => r.Room.Hotel)
                 .Where(r => r.UserId == userId)
                 .ToListAsync();
         }

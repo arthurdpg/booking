@@ -1,8 +1,8 @@
 ﻿using Booking.Application.ViewModels;
 using Booking.Domain.Configuration;
+using Booking.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Booking.Web.Controllers
 {
@@ -14,24 +14,20 @@ namespace Booking.Web.Controllers
             _config = config;
         }
 
-        public IActionResult Details()
-        {
-            return View();
-        }
-
         [Authorize]
         public async Task<IActionResult> MyReservations()
         {
             using (var httpClient = GetHttpClient())
             {
-                var response = httpClient.GetAsync(string.Format(_config.MyReservations, GetUserId())).Result;
+                var response = httpClient.GetAsync(string.Format(_config.Reservation + "user/{0}", GetUserId())).Result;
 
                 if (response.IsSuccessStatusCode)
                 {
                     var reservations = await response.Content.ReadAsAsync<IList<ReservationViewModel>>();
+                    return View(new MyReservationsViewModel { Reservations = reservations });
                 }
             }
-            return View();
+            return View(new MyReservationsViewModel());
         }
     }
 }

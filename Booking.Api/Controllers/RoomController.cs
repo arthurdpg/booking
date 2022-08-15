@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Booking.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class RoomController : ControllerBase
     {
         private readonly IRoomAppService _roomAppService;
@@ -15,7 +15,7 @@ namespace Booking.Api.Controllers
             _roomAppService = roomAppService;
         }
 
-        [HttpGet(Name = "room-availability")]
+        [HttpGet("room-availability")]
         public async Task<IList<RoomAvailabilityViewModel>> Get(DateTime from, DateTime to)
         {
             return await _roomAppService.GetAvailabilityByRange(from, to);
