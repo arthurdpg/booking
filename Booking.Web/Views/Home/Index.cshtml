@@ -1,0 +1,71 @@
+﻿@using Booking.Web.Extensions
+@model RoomsViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+@section css {
+    <link rel="stylesheet" href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.css" />
+}
+    <div class="text-center">
+        <h1 class="display-4">Welcome to the Hotel</h1>
+
+        @if (!User.Identity.IsAuthenticated)
+    {
+        <p>In order to make a reservation, it is necessary to <a asp-area="Identity" asp-page="/Account/Register">register yourself</a>.</p>
+    }
+    else
+    {
+        <form autocomplete="off" method="post" asp-controller="Home" asp-action="GetRoomAvailability">
+            <div class="row">
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(model => model.From, htmlAttributes: new { @class = "form-control", @placeholder = "From", @maxlength="8", @id="txtStartDate" })
+                </div>
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(model => model.To, htmlAttributes: new { @class = "form-control", @placeholder = "To", @maxlength="8", @id="txtEndDate" })
+                </div>
+                <div class="col-sm-4">
+                    <button type="submit" class="btn btn-primary">Check availability</button>
+                </div>
+            </div>
+        </form>
+        <br />
+        @if (Model.Rooms != null && Model.Rooms.Any())
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Hotel</th>
+                        <th scope="col">Room</th>
+                        <th scope="col">Size</th>
+                        <th scope="col">Available</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Rooms.Count; i++)
+                    {
+                        <tr>
+                            <th scope="row">@(i+1)</th>
+                            <td>@Model.Rooms[i].Room.Hotel.Name</td>
+                            <td>@Model.Rooms[i].Room.Type.GetDescription()</td>
+                            <td>@Model.Rooms[i].Room.Size m2</td>
+                            <td>@(Model.Rooms[i].Available? "Yes" : "No")</td>
+                            <td>
+                                @if (Model.Rooms[i].Available)
+                                {
+                                    <button class="btn btn-primary">Reserve</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    }
+
+</div>
+@section Scripts {
+    <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/js/home/index.js"></script>
+}

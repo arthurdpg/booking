@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  booking.web:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "50000:80"
+      - "50001:443"
+    depends_on:
+        - booking.sql
+        - booking.api
+  booking.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "50002:80"
+      - "50003:443"
+    depends_on:
+        - booking.sql
+  booking.sql:
+    environment:
+      - SA_PASSWORD=1Secure*Password1
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433"
